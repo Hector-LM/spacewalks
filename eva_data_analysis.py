@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
 # Data source: https://data.nasa.gov/resource/eva.json (with modifications)
 # load data
 input_file = open('./eva-data.json', 'r', encoding='ascii')
@@ -9,14 +10,31 @@ output_file = open('./eva-data.csv', 'w', encoding='utf-8')
 
 graph_file = './cumulative_eva_graph.png' 
 
-# format data 
-eva_df = pd.read_json(input_file, convert_dates=['date']) 
-eva_df['eva'] = eva_df['eva'].astype(float)
-eva_df.dropna(axis=0, inplace=True)
-eva_df.sort_values('date', inplace=True)
 
-# convert to csv
-eva_df.to_csv(output_file, index=False)
+def read_json_to_dataframe(input_file):
+    # format data 
+    eva_df = pd.read_json(input_file, convert_dates=['date']) 
+    eva_df['eva'] = eva_df['eva'].astype(float)
+    eva_df.dropna(axis=0, inplace=True)
+    eva_df.sort_values('date', inplace=True)
+
+    return eva_df
+
+eva_df = read_json_to_dataframe(input_file)
+
+
+
+
+def write_dataframe_to_csv(eva_df, output_file):
+    # convert to csv
+    eva_df.to_csv(output_file, index=False)
+    return  None
+
+write_dataframe_to_csv(eva_df, output_file)
+
+
+
+
 
 # convert units
 eva_df['duration_hours'] = eva_df['duration'].str.split(":").apply(lambda x: int(x[0]) + int(x[1])/60)
