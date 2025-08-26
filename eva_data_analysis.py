@@ -12,6 +12,17 @@ graph_file = './cumulative_eva_graph.png'
 
 
 def read_json_to_dataframe(input_file):
+    """
+    Read the data by removng any complete rows and sorting by date
+
+    Args:
+        input_file (str): The path to the JSON file
+
+    Returns:
+
+    eva_data (pd.Dataframe): The cleaned and sorted data as dataframe structure
+    """
+
     # format data 
     eva_df = pd.read_json(input_file, convert_dates=['date']) 
     eva_df['eva'] = eva_df['eva'].astype(float)
